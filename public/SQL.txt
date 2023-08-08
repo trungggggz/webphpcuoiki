@@ -1,0 +1,69 @@
+Bảng mô hình quan hệ CSDL
+
+Bảng Account(1-1)
+id
+name
+role
+
+Bảng infor Account (1-1)
+id
+id_Account
+fullname
+age
+genre
+images
+birthday
+email
+adress
+phone
+
+Bảng product
+id
+name
+img
+des
+made
+stock
+price
+discount
+day discount
+id_category
+size
+color
+nation
+year
+
+Bảng category
+id 
+name
+id_product
+
+Bảng year
+id
+year
+id_product
+
+Bảng feedback
+id
+name
+email
+title
+content
+
+Bảng order
+id
+fullname
+email
+phone
+address
+note
+order_date
+status(trạng thái mua hàng)
+total_money(tổng tiền bằng ngày * discound)
+
+Bảng order_detail
+id
+order_id
+product_id
+num
+total_money
