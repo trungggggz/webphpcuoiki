@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +13,19 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+require __DIR__.'/../routes/fe.php';
+require __DIR__.'/../routes/be.php';
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/register', function(){
+    return view('register');
+})->name('register');
+
+Route::get('/login', function(){
+    return view('login');
+})->name('login');
+Route::get('auth/redirect/{provider}',[AuthController::class, 'redirect'])->name('auth/redirect');
+Route::get('callback/{provider}',[AuthController::class, 'callback'])->name('callback');
+Route::post('/register',[AuthController::class, 'register'])->name('do_register');
+Route::post('/login',[AuthController::class, 'login'])->name('do_login');
