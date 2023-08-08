@@ -15,7 +15,8 @@ use App\Http\Controllers\AuthController;
 */
 require __DIR__.'/../routes/fe.php';
 require __DIR__.'/../routes/be.php';
-Route::get('/', function () {
+Route::get('/welcome', function () {
+    
     return view('welcome');
 });
 Route::get('/register', function(){
@@ -29,3 +30,4 @@ Route::get('auth/redirect/{provider}',[AuthController::class, 'redirect'])->name
 Route::get('callback/{provider}',[AuthController::class, 'callback'])->name('callback');
 Route::post('/register',[AuthController::class, 'register'])->name('do_register');
 Route::post('/login',[AuthController::class, 'login'])->name('do_login');
+Route::post('/logout',[AuthController::class, 'logout'])->name('do_logout');
