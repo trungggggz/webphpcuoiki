@@ -46,13 +46,156 @@
                 </div>
                 <div class="column">
                     <div class="flexwrap">
-                      
+                        @foreach (App\Models\admin\Product::where('sale', '=', 1)->limit(1)->get() as $product)
+                            <div class="row products big">
+                                <div class="item">
+                                    <div class="offer">
+                                        <p>Offer hết hạn vào </p>
+                                        <ul class="flexcenter">
+                                            <li class="days"></li>
+                                            <li class="hours"></li>
+                                            <li class="minutes"></li>
+                                            <li class="seconds"></li>
+                                        </ul>
+                                    </div>
+                                    <div class="media">
+                                        <div class="images">
+                                            <a href="{{ url('pageoffer/' . $product->id) }}">
+                                                <img src="{{ $product->images->first()->path }}"
+                                                    alt="{{ $product->name }}">
+                                            </a>
+                                        </div>
+                                        <div class="hoverable">
+                                            <ul>
+                                                <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
+                                                <li><a href="{{url('pageoffer/' . $product->id)}}"><i class="ri-eye-line"></i></a></li>
+                                                <li><a href=""><i class="ri-shuffle-line"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="discount circle flexcenter"><span>{{ $product->discount }}%</span>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <div class="rating">
+                                          
+                                            <div class="mini_text">0 review</div>
+                                        </div>
+                                        <h3 class="main_links"><a
+                                                href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
+                                        </h3>
+                                        <div class="price">
+                                            <span
+                                                class="current">{{ number_format(floor($product->price - ($product->price * $product->discount) / 100)) }}
+                                                VND</span>
+                                            <span class="normal mini_text">{{ number_format($product->price) }} VND</span>
+                                        </div>
+                                        <div class="stock mini_text">
+                                            <div class="qty">
+                                                <span>Số lượng: <strong
+                                                        class="qty_available">{{ $product->stock + $product->sold}}</strong></span>
+                                                <span>Đã bán: <strong class="qty_sold">{{$product->sold}}</strong></span>
+                                            </div>
+                                            <div class="bar">
+                                                <div class="available"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                        @endforeach
                     </div>
                     <div class="row products mini">
-                            
+                            @foreach (App\Models\admin\Product::where('sale' , '=' ,1)->inRandomOrder()->limit(3)->get() as $product)
+                            <div class="item">
+                                <div class="media">
+                                    <div class="thumbnail " style="object-fit: cover">
+                                        <a href="{{ url('pageoffer/' . $product->id) }}">
+                                            <img src="{{ $product->images->first()->path }}" style="height: 100%">
+                                        </a>
+                                    </div>
+                                    <div class="hoverable">
+                                        <ul>
+                                            <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
+                                            <li><a href="{{url('detail/' . $product->id)}}"><i class="ri-eye-line"></i></a></li>
+                                            <li><a href=""><i class="ri-shuffle-line"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    @if ($product->discount)
+                                        <div class="discount circle flexcenter"><span>{{ $product->discount }}%</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="content">
+                                    <h3 class="main_links"><a
+                                            href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(4) }}</a>
+                                    </h3>
+                                    <div class="rating">
+                                    <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+
+                                    </div>
+                                    <div class="price">
+                                        @if ($product->discount)
+                                            <span
+                                                class="current">{{ number_format(floor($product->price - ($product->price * $product->discount) / 100)) }}
+                                                VND</span>
+                                            <span class="normal mini_text">{{ number_format($product->price) }} VND</span>
+                                        @else
+                                            <span class="current">{{ number_format($product->price) }} VND</span>
+                                        @endif
+                                    </div>
+                                    <div class="mini_text">
+                                        <p>Đã bán {{$product->sold}}</p>
+                                        <p>Free Shipping</p>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
                         </div>
                         <div class="row products mini">
-                            
+                            @foreach (App\Models\admin\Product::where('sale' , '=' ,1)->inRandomOrder()->limit(3)->get() as $product)
+                            <div class="item">
+                                <div class="media">
+                                    <div class="thumbnail " style="object-fit: cover">
+                                        <a href="{{ url('pageoffer/' . $product->id) }}">
+                                            <img src="{{ $product->images->first()->path }}" style="height: 100%">
+                                        </a>
+                                    </div>
+                                    <div class="hoverable">
+                                        <ul>
+                                            <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
+                                            <li><a href="{{url('detail/' . $product->id)}}"><i class="ri-eye-line"></i></a></li>
+                                            <li><a href=""><i class="ri-shuffle-line"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    @if ($product->discount)
+                                        <div class="discount circle flexcenter"><span>{{ $product->discount }}%</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="content">
+                                    <h3 class="main_links"><a
+                                            href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(4) }}</a>
+                                    </h3>
+                                    <div class="rating">
+                                    <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+                                    </div>
+                                    <div class="price">
+                                        @if ($product->discount)
+                                            <span
+                                                class="current">{{ number_format(floor($product->price - ($product->price * $product->discount) / 100)) }}
+                                                VND</span>
+                                            <span class="normal mini_text">{{ number_format($product->price) }} VND</span>
+                                        @else
+                                            <span class="current">{{ number_format($product->price) }} VND</span>
+                                        @endif
+                                    </div>
+                                    <div class="mini_text">
+                                        <p>Đã bán {{$product->sold}}</p>
+                                        <p>Free Shipping</p>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
                         </div>
                 </div>
             </div>
@@ -73,7 +216,54 @@
                                     class="ri-arrow-right-line"></i></a></div>
                     </div>
                     <div class="products main flexwrap">
-                       
+                        @foreach (App\Models\admin\Product::where('sale' , '=' , 0)->inRandomOrder()->limit(9)->get() as $product)
+                            <div class="item page_other">
+                                <div class="media">
+                                    <div class="thumbnail object_cover">
+                                        <a href="{{ url('detail/' . $product->id) }}">
+                                            <img src="{{ $product->images->first()->path }}" alt="{{ $product->name }}">
+                                        </a>
+                                    </div>
+                                    <div class="hoverable">
+                                        <ul>
+                                            <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
+                                            <li><a href="{{url('detail/' . $product->id)}}"><i class="ri-eye-line"></i></a></li>
+                                            <li><a href=""><i class="ri-shuffle-line"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    @if ($product->discount)
+                                        <div class="discount circle flexcenter"><span>{{ $product->discount }}%</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="content">
+                                    <div class="rating">
+                                    <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+
+                                    </div>
+                                    <h3 class="main_links"><a
+                                            href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
+                                    </h3>
+                                    <div class="price">
+                                        @if ($product->discount)
+                                            <span
+                                                class="current">{{ number_format(floor($product->price - ($product->price * $product->discount) / 100)) }}
+                                                VND</span>
+                                            <span class="normal mini_text">{{ number_format($product->price) }} VND</span>
+                                        @else
+                                            <span class="current">{{ number_format($product->price) }} VND</span>
+                                        @endif
+                                    </div>
+                                    <div class="footer">
+                                        <ul class="mini_text">
+                                            <li>Cotton, Polyester</li>
+                                            <li>100% nguyên chất</li>
+                                            <li>Phong cách</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
