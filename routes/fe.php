@@ -4,6 +4,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\user\homeController;
 use App\Http\Controllers\user\singlePageController;
+use App\Http\Controllers\user\wishlistController;
+
 use Illuminate\Routing\Router;
 
 /*
@@ -17,7 +19,12 @@ use Illuminate\Routing\Router;
      
 
         Route::get('pageoffer/{id}',[singlePageController::class,'pageOffer'])->name('pageoffer');
-
+        Route::middleware('auth')->prefix('wishlist')->group(function(){
+            Route::get('/{id}',[wishlistController::class,'index'])->name('wishlist');
+            Route::post('store',[wishlistController::class,'store'])->name('wishlist.store');
+            Route::delete('destroy/{id}',[wishlistController::class,'destroy'])->name('wishlist.destroy');
+            Route::delete('delete/{id}',[wishlistController::class,'delete'])->name('wishlist.delete');
+        });
     })
 
 ?>

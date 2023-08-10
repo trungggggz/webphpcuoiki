@@ -180,16 +180,49 @@
                                                                 class="ri-heart-fill"></i></span>
                                                         <span id="love" style="color: #ff6b6b">Đã yêu thích</span>
                                                     </a>
+                                                   
                                                 </li>
                                                 @endforeach
                                               @else
                                                 <li>    
-                                                    <a href="#" id="wishlist"
-                                                        onclick="wishlist({{ $products->id }},{{ Auth::user()->id }})">
+                                                    <a  id="wishlist"
+                                                    data-product-id="{{ $products->id }}" data-user-id="{{ Auth::user()->id }}"
+                                                    class="wishlist-link">
                                                         <span class="icon_large"><i class="ri-heart-line"></i></span>
                                                         <span id="love">Yêu thích</span>
                                                     </a>
+                                                   
                                                 </li>
+                                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+        $(document).ready(function() {
+            $('.wishlist-link').click(function(e) {
+                e.preventDefault(); // Prevent the default link behavior
+                
+                var productId = $(this).data('product-id');
+                var userId = $(this).data('user-id');
+                
+                $.ajax({
+                    type: "POST",
+                    url: "/wishlist/store", // Replace with your actual route URL
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        product_id: productId,
+                        user_id: userId
+                    },
+                    success: function(response) {
+                        // Handle success, update UI, display messages, etc.
+                        console.log(response); // For debugging
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error, display error messages, etc.
+                        console.error(error); // For debugging
+                    }
+                });
+            });
+        });
+</script>
                                                 @endif
                                                 @else
                                                     <li>
@@ -206,6 +239,7 @@
                                                         <span>Chia sẻ</span>
                                                     </a>
                                                 </li>
+                                             
                                             </ul>
                                         </div>
                                     </div>
@@ -215,7 +249,7 @@
                                                 <a href="#" class="icon_small">Thông tin sản phẩm</a>
                                                 <div class="content">
                                                     <ul>
-                                                     
+                                                       
                                                         <li><span>Category:</span>
                                                             @foreach ($products->categories as $category)
                                                                 <a href="{{url('category/'. $category->id)}}">
@@ -225,7 +259,7 @@
                                                         <li><span>Số lượng: </span><span>{{ $products->stock }}</span>
                                                         </li>
                                                         <li><span>Đã bán:</span><span>{{ $products->sold }}</span></li>
-                                                        <li><span>Đánh giá:</span><span>5 sao</span>
+                                                        <li><span>Đánh giá:</span><span> 1 sao</span>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -286,13 +320,16 @@
                                                 </div>
                                             </li>
                                             <li class="has_child">
+                                                <a href="#" class="icon_small">Đánh giá<span
+                                                        class="mini_text render_count">0</span>
+                                                    </a>
                                                 <div class="content">
                                                     <div class="reviews">
                                                         <h4>Bình luận của mọi người</h4>
                                                         <div class="review_block">
                                                             <div class="review_block_head">
                                                                 <div class="flexitem">
-                                                                    <span class="rate_sum">5
+                                                                    <span class="rate_sum">0
                                                                         sao</span>
                                                                     <span class="render_count">Trên
                                                                         0 đánh
@@ -309,7 +346,7 @@
                                                                 <div class="review_block_body">
                                                                     <ul id="review_ul">
 
-                                                                       
+                                                                        
                                                                     </ul>
                                                                     <div class="second_links">
                                                                         <a href="#" class="view_all">
