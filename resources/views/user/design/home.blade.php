@@ -77,8 +77,18 @@
                                     </div>
                                     <div class="content">
                                         <div class="rating">
-                                          
-                                            <div class="mini_text">0 review</div>
+                                            @if (80 *
+                                                    ($product->reviews()->pluck('feedbacks.rate')->avg() /
+                                                        5) ==
+                                                    0)
+                                                <div class="stars" style="background-image:none;width:150px">Chưa có
+                                                    đánh giá</div>
+                                            @else
+                                                <div class="stars"
+                                                    style="width:{{ 80 *($product->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
+                                                </div>
+                                            @endif
+                                            <div class="mini_text">{{ $product->reviews->count() }} review</div>
                                         </div>
                                         <h3 class="main_links"><a
                                                 href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
@@ -130,8 +140,12 @@
                                             href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(4) }}</a>
                                     </h3>
                                     <div class="rating">
-                                    <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
-
+                                        @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
+                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+                                        @else
+                                        <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
+                                        @endif
+                                        <div class="mini_text">{{$product->reviews->count()}} review</div>
                                     </div>
                                     <div class="price">
                                         @if ($product->discount)
@@ -177,7 +191,12 @@
                                             href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(4) }}</a>
                                     </h3>
                                     <div class="rating">
-                                    <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+                                        @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
+                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+                                        @else
+                                        <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
+                                        @endif
+                                        <div class="mini_text">{{$product->reviews->count()}} review</div>
                                     </div>
                                     <div class="price">
                                         @if ($product->discount)
@@ -238,8 +257,12 @@
                                 </div>
                                 <div class="content">
                                     <div class="rating">
-                                    <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
-
+                                        @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
+                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+                                        @else
+                                        <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
+                                        @endif
+                                        <div class="mini_text">{{$product->reviews->count()}} review</div>
                                     </div>
                                     <h3 class="main_links"><a
                                             href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>

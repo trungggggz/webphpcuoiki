@@ -8,7 +8,7 @@ use App\Models\admin\Category;
 use App\Models\admin\Image;
 use App\Models\admin\ValueAttribute;
 use Illuminate\Database\Eloquent\SoftDeletes;
-// use App\Models\admin\Review;
+use App\Models\admin\Review;
 // use App\Models\OrderDetail;
 use App\Models\Voucher;
 // use App\Models\Wishlist;
@@ -37,7 +37,7 @@ class Product extends Model
     }
     
     public function brand(){
-        // return $this->belongsTo(Brand::class);
+        return $this->belongsTo(Brand::class);
     }
     
     public function images(){
@@ -54,7 +54,7 @@ class Product extends Model
         // return $this->hasMany(Wishlist::class);
     }
     public function reviews(){
-        // return $this->hasMany(Review::class);
+        return $this->hasMany(Review::class);
     }
     public function attributevalues()
     {

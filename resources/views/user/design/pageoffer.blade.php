@@ -60,8 +60,20 @@
 
                                     <div class="content">
                                         <div class="rating">
+                                            @if (80 *
+                                            ($products->reviews()->pluck('feedbacks.rate')->avg() /
+                                                5) ==
+                                            0)
                                         <div class="stars" style="background-image:none;width:150px">Chưa có
                                                 đánh giá</div>
+                                        @else
+                                            <div class="stars"
+                                                style="width:{{ 80 *($products->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
+                                            </div>
+                                        @endif
+                                            <a href=""
+                                                class="mini_text render_count">{{ $products->reviews->count() }}
+                                                review</a>
                                         </div>
                                         <div class="price">
                                             @if ($products->discount)
@@ -180,49 +192,16 @@
                                                                 class="ri-heart-fill"></i></span>
                                                         <span id="love" style="color: #ff6b6b">Đã yêu thích</span>
                                                     </a>
-                                                   
                                                 </li>
                                                 @endforeach
                                               @else
                                                 <li>    
-                                                    <a  id="wishlist"
-                                                    data-product-id="{{ $products->id }}" data-user-id="{{ Auth::user()->id }}"
-                                                    class="wishlist-link">
+                                                    <a href="#" id="wishlist"
+                                                        onclick="wishlist({{ $products->id }},{{ Auth::user()->id }})">
                                                         <span class="icon_large"><i class="ri-heart-line"></i></span>
                                                         <span id="love">Yêu thích</span>
                                                     </a>
-                                                   
                                                 </li>
-                                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-        $(document).ready(function() {
-            $('.wishlist-link').click(function(e) {
-                e.preventDefault(); // Prevent the default link behavior
-                
-                var productId = $(this).data('product-id');
-                var userId = $(this).data('user-id');
-                
-                $.ajax({
-                    type: "POST",
-                    url: "/wishlist/store", // Replace with your actual route URL
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        product_id: productId,
-                        user_id: userId
-                    },
-                    success: function(response) {
-                        // Handle success, update UI, display messages, etc.
-                        console.log(response); // For debugging
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error, display error messages, etc.
-                        console.error(error); // For debugging
-                    }
-                });
-            });
-        });
-</script>
                                                 @endif
                                                 @else
                                                     <li>
@@ -239,7 +218,6 @@
                                                         <span>Chia sẻ</span>
                                                     </a>
                                                 </li>
-                                             
                                             </ul>
                                         </div>
                                     </div>
@@ -249,7 +227,9 @@
                                                 <a href="#" class="icon_small">Thông tin sản phẩm</a>
                                                 <div class="content">
                                                     <ul>
-                                                       
+                                                        <li><span>Brand:</span><a
+                                                            href="{{url('brand/'.$products->brand_id)}}"><span>{{ $products->brand->name }}</span></a>
+                                                        </li>
                                                         <li><span>Category:</span>
                                                             @foreach ($products->categories as $category)
                                                                 <a href="{{url('category/'. $category->id)}}">
@@ -259,7 +239,7 @@
                                                         <li><span>Số lượng: </span><span>{{ $products->stock }}</span>
                                                         </li>
                                                         <li><span>Đã bán:</span><span>{{ $products->sold }}</span></li>
-                                                        <li><span>Đánh giá:</span><span> 1 sao</span>
+                                                        <li><span>Đánh giá:</span><span>{{ round($rate, 1) }} sao</span>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -321,18 +301,17 @@
                                             </li>
                                             <li class="has_child">
                                                 <a href="#" class="icon_small">Đánh giá<span
-                                                        class="mini_text render_count">0</span>
-                                                    </a>
+                                                        class="mini_text render_count">{{ $products->reviews->count() }}</span></a>
                                                 <div class="content">
                                                     <div class="reviews">
                                                         <h4>Bình luận của mọi người</h4>
                                                         <div class="review_block">
                                                             <div class="review_block_head">
                                                                 <div class="flexitem">
-                                                                    <span class="rate_sum">0
+                                                                    <span class="rate_sum">{{ round($rate, 1) }}
                                                                         sao</span>
                                                                     <span class="render_count">Trên
-                                                                        0 đánh
+                                                                        {{ $products->reviews->count() }} đánh
                                                                         giá</span>
                                                                 </div>
                                                                 @if (Auth::check())
@@ -346,7 +325,55 @@
                                                                 <div class="review_block_body">
                                                                     <ul id="review_ul">
 
-                                                                        
+                                                                        @foreach ($products->reviews()->orderBy('created_at', 'desc')->limit(6)->get() as $review)
+                                                                            <li class="item">
+                                                                                <div class="review_form">
+                                                                                    <p class="person">Bình luận bởi
+                                                                                        {{ $review->name }}
+                                                                                    </p>
+                                                                                    <p class="mini_text">Vào ngày
+                                                                                        {{ date('d-m-Y'), strtotime($review->created_at) }}
+                                                                                    </p>
+                                                                                </div>
+                                                                                <div class="review_rating rating">
+                                                                                    <div class="stars"
+                                                                                        style="width: {{ 80 * ($review->rate / 5) }}px">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="review_img object_cover">
+                                                                                    @if (!(empty($review->image)))
+                                                                                        <img src="{{ asset('storage/review/'. $review->image) }}"
+                                                                                            style="position: static;width:200px;height:200px">
+                                                                                    @endif
+                                                                                </div>
+                                                                                <div class="review_title">
+                                                                                    <p>{{ $review->title }}</p>
+                                                                                </div>
+                                                                                <div class="review_text">
+                                                                                    <p>{{ $review->content }}</p>
+                                                                                </div>
+                                                                                @if (Auth::check())
+                                                                                <div
+                                                                                style="display:flex; gap:1em;">
+                                                                                    @if (Auth::user()->name === $review->name)
+                                                                                    <a href="#review_form"
+                                                                                        class="primary_button"
+                                                                                        style="border: none;outline:none"
+                                                                                        id="btn_edit"
+                                                                                        onclick="sendEdit({{ $review->id }})">Sửa</a>
+                                                                                    @endif
+                                                                                    @if (Auth::user()->name === $review->name || Auth::user()->role_id == 2)
+                                                                                            <button type="submit"
+                                                                                                class="secondary_button"
+                                                                                                id="btn_delete"
+                                                                                                style="border:none; outline:none"
+                                                                                                onclick="sendDelete({{ $review->id }})">
+                                                                                                Xóa </button>
+                                                                                     @endif
+                                                                                    </div>
+                                                                                @endif
+                                                                            </li>
+                                                                        @endforeach
                                                                     </ul>
                                                                     <div class="second_links">
                                                                         <a href="#" class="view_all">
@@ -484,8 +511,18 @@
                                                 </ul>
                                             </div>
                                             <div class="rating">
-                                            <div class="stars" style="background-image:none;width:150px">Chưa có
+                                                @if (80 *
+                                                        ($product->reviews()->pluck('feedbacks.rate')->avg() /
+                                                            5) ==
+                                                        0)
+                                                    <div class="stars" style="background-image:none;width:150px">Chưa có
                                                         đánh giá</div>
+                                                @else
+                                                    <div class="stars"
+                                                        style="width:{{ 80 *($product->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
+                                                    </div>
+                                                @endif
+                                                <div class="mini_text">{{ $product->reviews->count() }} review</div>
                                             </div>
                                             <h3 class="main_links"><a
                                                     href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>

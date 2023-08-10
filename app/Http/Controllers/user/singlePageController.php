@@ -29,13 +29,14 @@ class singlePageController extends Controller
     public function pageOffer(Request $request, $id)
     {
         $products = Product::find($id);
-        // $rate = $products->reviews()->pluck('feedbacks.rate')->avg();
+        $rate = $products->reviews()->pluck('feedbacks.rate')->avg();
         $categories = Category::all();
-        $brands = [];
+        $brands = Brand::all();
+
         $cart = session()->get('cart', []);
         Session::put('pageoffer_url', request()->fullUrl());
         $a =  DB::table('products')->join('wishlist', 'products.id', '=' ,'product_id')->get();
-        return view('user.design.pageoffer', compact('products', 'categories', 'brands','cart'));
+        return view('user.design.pageoffer', compact('products', 'categories', 'brands','cart','rate'));
     }
 
 
