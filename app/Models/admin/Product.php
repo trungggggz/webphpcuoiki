@@ -9,7 +9,7 @@ use App\Models\admin\Image;
 use App\Models\admin\ValueAttribute;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\admin\Review;
-// use App\Models\OrderDetail;
+use App\Models\OrderDetail;
 use App\Models\Voucher;
 // use App\Models\Wishlist;
 
@@ -44,7 +44,7 @@ class Product extends Model
         return $this->hasMany(Image::class);
     }
     public function orderDetails(){
-        // return $this->hasMany(OrderDetail::class);
+        return $this->hasMany(OrderDetail::class);
     }
     public function vouchers(){
         return $this->hasMany(Voucher::class);
