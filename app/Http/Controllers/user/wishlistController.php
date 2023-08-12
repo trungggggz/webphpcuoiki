@@ -20,7 +20,7 @@ class wishlistController extends Controller
         $wishlists = Wishlist::where('user_id',$id)->paginate(12);
         $products = Product::all();
         $categories = Category::all();
-        $brands =[];
+        $brands = Brand::all();
         $cart = session()->get('cart', []);
         return view('user.design.wishlist',compact('wishlists','products', 'categories', 'brands','cart'));
     }

@@ -5,7 +5,6 @@ use App\Models\Information;
 use App\Models\admin\Product;
 use App\Models\admin\Category;
 use App\Models\admin\Brand;
-
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -27,8 +26,7 @@ class informationController extends Controller
         $brands = Brand::all();
         $user = User::find($id);
         $cart = session()->get('cart', []);
-        $information = Information::where('user_id', $id)->first();
-        return view('user.design.information.index', compact('user','products', 'categories', 'brands','cart','information'));
+        return view('user.design.information.index', compact('user','products', 'categories', 'brands','cart'));
     }
 
     /**
@@ -92,10 +90,8 @@ class informationController extends Controller
                 'avatar' => $image,
                 'gender' =>$input['gender'],
             ]);
-
             return view('user.design.information.index',compact('products', 'categories', 'brands','cart','user'))->with('success', 'Đã thêm thông tin thành công');
         } catch (Exception $e) {
-            dd($e);
             return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
     }

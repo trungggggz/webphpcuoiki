@@ -90,8 +90,9 @@
                                                     <div class="row">
                                                         <h4>Danh mục sản phẩm</h4>
                                                         <ul>
-                                                           
-                                                         
+                                                            @foreach ($categories->take(8) as $category)
+                                                                <li><a href="{{url('category/'. $category->id)}}">{{ $category->name }}</a></li>
+                                                            @endforeach
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -100,7 +101,10 @@
                                                         <h4>Túi</h4>
                                                         <ul>
                                                             <ul>
-                                                            
+                                                                @foreach ($categories->take(8) as $category)
+                                                                    <li><a href="{{url('category/'. $category->id)}}">{{ $category->name }}</a>
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
                                                         </ul>
                                                     </div>
@@ -110,7 +114,10 @@
                                                         <h4>Giày</h4>
                                                         <ul>
                                                             <ul>
-                                                               
+                                                                @foreach ($categories->take(8) as $category)
+                                                                    <li><a href="{{url('category/'. $category->id)}}">{{ $category->name }}</a>
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
                                                         </ul>
                                                     </div>
@@ -120,7 +127,10 @@
                                                         <h4>Brand</h4>
                                                         <ul class="brands">
                                                             <ul>
-                                                               
+                                                                @foreach ($brands->take(8) as $brand)
+                                                                    <li><a href="{{url('brand/'.$brand->id)}}">{{ $brand->name }}</a>
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
                                                         </ul>
                                                         <a href="" class="view_all">Xem tất cả <i
@@ -168,7 +178,9 @@
                                 <li class="mobile_hide"><a href="{{ url('/wishlist/' . Auth::user()->id) }}">
                                         <div class="icon_large" style="margin-top: -36px"><i
                                                 class="ri-heart-line"></i>
-                                           
+                                            <div class="fly_item"><span class="item_number"
+                                                    id="wishlist_number">{{ App\Models\Wishlist::where('user_id', Auth::user()->id)->count() }}</span>
+                                            </div>
                                         </div>
                                     </a>
                                 </li>
@@ -297,7 +309,13 @@
                                             </div>
                                         @endif
                                         <div onclick="toggle()" class="profile-dropdown-btn">
-                                         
+                                            @if (App\Models\Information::where('user_id', '=', Auth::user()->id)->first())
+                                                <div class="profile-img"
+                                                    style="background-image:url({{ asset('storage/avatar/' . App\Models\Information::where('user_id', '=', Auth::user()->id)->first()->avatar) }});border:1px solid black">
+                                                @else
+                                                    <div class="profile-img"
+                                                        style="background-image:url({{ asset('images/user.png') }})">
+                                            @endif
                                             <i class="fa-solid fa-circle"></i>
                                         </div>
 
@@ -380,7 +398,7 @@
                     <div class="dpt_cat">
                         <div class="dpt_head">
                             <div class="main_text">Mại zô Mại zô</div>
-                            <div class="mini_text mobile_hide">Tất cả {{ 0 }} sản phẩm</div>
+                            <div class="mini_text mobile_hide">Tất cả {{ $products->count() }} sản phẩm</div>
                             <a href="" class="dpt_trigger mobile_hide" id="close_menu">
                                 <i class="ri-menu-3-line ri_xl"></i>
                             </a>
@@ -806,7 +824,9 @@
                                     <a href="{{ url('wishlist/' . Auth::user()->id) }}">
                                         <i class="ri-heart-line"></i>
                                         <span>Wishlist</span>
-                                   
+                                        <div class="fly_item"><span class="item_number"
+                                                id="wishlist_number">{{ App\Models\Wishlist::where('user_id', Auth::user()->id)->count() }}</span>
+                                        </div>
                                     </a>
                                 </li>
                             @else

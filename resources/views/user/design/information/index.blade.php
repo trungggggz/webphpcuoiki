@@ -65,14 +65,14 @@
                                 href="{{ url('information/edit/' . Auth::user()->id) }}">Điền thông tin</a>
                             <div class="text_content">
                                 <ul>
-                                    <li>Số điện thoại: {{$information->phone}}</li>
-                                    <li>Địa chỉ: {{$information->address}}</li>
-                                    <li>Ngày sinh: {{$information->birthday}}</li>
+                                    <li>Số điện thoại: </li>
+                                    <li>Địa chỉ:</li>
+                                    <li>Ngày sinh:</li>
                                 </ul>
                                 <ul>
-                                    <li>Giới tính: {{$information->gender}}</li>
-                                    <li>Sở thích: {{$information->hobbies}}</li>
-                                    <li>Giới thiệu sơ về bản thân: {{$information->description}}</li>
+                                    <li>Giới tính:</li>
+                                    <li>Sở thích:</li>
+                                    <li>Giới thiệu sơ về bản thân:</li>
                                 </ul>
                             </div>
                         </div>

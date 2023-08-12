@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\admin\Review;
 use App\Models\OrderDetail;
 use App\Models\Voucher;
-// use App\Models\Wishlist;
+use App\Models\Wishlist;
 
 class Product extends Model
 {
@@ -51,7 +51,7 @@ class Product extends Model
     }
 
     public function wishlists(){
-        // return $this->hasMany(Wishlist::class);
+        return $this->hasMany(Wishlist::class);
     }
     public function reviews(){
         return $this->hasMany(Review::class);

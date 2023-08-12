@@ -41,20 +41,16 @@
                                     <td>{{ $account->id }}</td>
                                     <td>{{ $account->name }}</td>
                                     <td>{{ $account->email }}</td>
-                                    <td>{{ $account->role_id }}</td>
+                                    <td>{{ $account->roles->name }}</td>
                                     <td class="table_crud" style="display:flex;justify-content:flex-start;">
 
                                         <a href="{{ url('admin/account/edit/' . $account->id) }}" title="Sửa account"
                                             style="border: none;outline:none">
                                             <i class="fa-solid fa-pen" style="color: green; font-size:25px;"></i></a>
-                                            <form method="POST" action="{{ url('admin/account/delete/' . $account->id) }}"
-      onsubmit="return confirm('Bạn có muốn xóa không?');">
-    @csrf
-    @method('DELETE')
-    <button type="submit" title="Xóa account" style="border: none; background: transparent;">
-        <i class="fa-solid fa-trash" style="color: red; font-size: 25px;"></i>
-    </button>
-</form>
+                                        <a href="{{ url('admin/account/destroy' . $account->id) }}" type="submit"
+                                            title="Xóa account" onclick=" return confirm ('Bạn có muốn xóa không?')"
+                                            style="border: none;outline:none;padding:0 13px;background:transparent"><i
+                                                class="fa-solid fa-trash" style="color: red; font-size:25px;"></i><a>
                                     </td>
                             </tr>
                             @endforeach

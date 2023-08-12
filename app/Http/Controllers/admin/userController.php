@@ -17,7 +17,7 @@ class userController extends Controller
      */
     public function index()
     {
-        $accounts = User::orderBy('role_id')->whereNull('deleted_at')->paginate(6);
+        $accounts = User::orderBy('role_id')->paginate(6);
         Session::put('admin_url', request()->fullUrl());
         return view('admin.account.index', compact('accounts'));
     }
@@ -76,34 +76,16 @@ class userController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
-            $accounts = User::find($id);
-    
-            if (!$accounts) {
-                return redirect()->back()->with('error', 'User not found');
-            }
-    
-            $input = $request->all();
-            // Perform validation on $input here
-    
-            unset($input['_token']);
-    
-           $accounts->role_id =  $input['role_id']; // Update and store the success status
-            $success = $accounts->save();
-            if ($success) {
-                if (Session::get('admin_url')) {
-                    return redirect(session('admin_url'))->with('success', 'Đã sửa vai trò thành công');
-                } else {
-                   
-                    return redirect()->back()->with('success', 'Đã sửa vai trò thành công');
-                }
-            } else {
-                return redirect()->back()->with('error', 'Không thể cập nhật thông tin');
-            }
-        } catch (Exception $e) {
-            dd($e);
-            // Log the exception or handle it in a way that suits your application
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi');
+        try{
+        $accounts = User::find($id);
+        $input  = $request->all();
+        unset($input['_token']);
+        $accounts->update($input);
+        if (Session::get('admin_url')) {
+            return redirect(session('admin_url'))->with('success', 'Đã sửa vai trò thành công');
+        }
+        }catch(Exception $e){
+            return redirect()->back()>with('error', 'Đã xảy ra lỗi');
         }
     }
     /**
@@ -134,30 +116,8 @@ class userController extends Controller
         return back()->with('success', 'Đã restore user thành công');
     }  
 
-    // public function delete($id){
-    //     $deletedUsers = User::onlyTrashed()->get();
-    //     if($deletedUsers){
-    //         dd()
-    //         return back()->with('success', 'Đã xóa user thành công');
-    //     }
-    //     else{
-    //         dd("co loi");
-    //     }
-    // }
     public function delete($id){
-        try {
-            $user = User::find($id);
-    
-            if (!$user) {
-                return redirect()->back()->with('error', 'User not found');
-            }
-    
-            $user->delete(); // Soft delete the user
-            
-            return back()->with('success', 'Đã xóa user thành công');
-        } catch (Exception $e) {
-            // Log the exception or handle it in a way that suits your application
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi');
-        }
+        User::onlyTrashed()->find($id)->forceDelete();
+        return back()->with('success', 'Đã xóa user thành công');
     }
 }

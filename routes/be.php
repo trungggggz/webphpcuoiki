@@ -43,6 +43,7 @@ Route::middleware('auth', 'is_admin')->prefix('/admin')->group(function () {
     Route::get('search', [productController::class, 'search'])->name('admin.product.search');
     Route::get('viewrestore', [productController::class, 'viewrestore'])->name('admin.product.viewrestore');
     Route::get('restore/{id}', [productController::class, 'restore'])->name('admin.product.restore');
+    Route::delete('delete/{id}', [productController::class, 'delete'])->name('admin.product.delete');
   });
   // Route Category
 

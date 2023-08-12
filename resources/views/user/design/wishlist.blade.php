@@ -5,7 +5,7 @@
 @section('content')
     @if (Auth::check())
     @if ($wishlists->count() > 0 ) 
-    <h1 class="search_page">Danh sách product yêu thích của bạn</h1>
+    <h1 class="search_page">Danh sách phim yêu thích của bạn</h1>
     <div class="features">
         <div class="container">
             <div class="wrapper">
@@ -51,8 +51,12 @@
                                 </div>
                                 <div class="content">
                                     <div class="rating">
-                                    <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
-
+                                        @if (80 * ($result->product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
+                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+                                        @else
+                                        <div class="stars" style="width:{{ 80 * ($result->product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
+                                        @endif
+                                        <div class="mini_text">({{$result->product->reviews->count()}}) </div>
                                     </div>
                                     @if ($result->product->sale == 0)
                                     <h3 class="main_links"><a
@@ -89,7 +93,7 @@
         </div>
     </div>
     @else
-    <h1 class="search_page">Bạn chưa có product yêu thích nào</h1>
+    <h1 class="search_page">Bạn chưa có phim yêu thích nào</h1>
     @endif   
     @endif
 

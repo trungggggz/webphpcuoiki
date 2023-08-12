@@ -32,7 +32,6 @@ class singlePageController extends Controller
         $rate = $products->reviews()->pluck('feedbacks.rate')->avg();
         $categories = Category::all();
         $brands = Brand::all();
-
         $cart = session()->get('cart', []);
         Session::put('pageoffer_url', request()->fullUrl());
         $a =  DB::table('products')->join('wishlist', 'products.id', '=' ,'product_id')->get();

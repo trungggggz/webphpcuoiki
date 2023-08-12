@@ -1,1 +1,8 @@
-import './bootstrap';
+// const { createApp } = require('vue');
+
+// require('./bootstrap');
+// import {createApp} from 'vue';
+// import App from './App.vue';
+
+// const app = createApp(App);
+// app.mount("#app");

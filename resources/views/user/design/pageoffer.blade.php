@@ -165,8 +165,8 @@
                                                 </div>
                                                 @if ($products->stock > 0)
                                                     <div class="button_cart">
-                                                    <button class="primary_button" id="addtocart" onclick="addToCart({{ $products->id }})">Add to cart</button>
-
+                                                        <button class="primary_button" id="addtocart"
+                                                            onclick="addCart({{ $products->id }})">Add to cart</button>
                                                     </div>
                                                     <div class="button_cart" style="margin-right: 1em">
                                                         <button type="submit" class="secondary_button">Mua ngay</button>
@@ -568,10 +568,6 @@
     @if (Auth::check())
         <script>
             // comment
-            const addToCart = document.querySelector('#addtocart');
-
-           
-            
             const btn_review = document.querySelector('#button_review');
             const form_review = document.querySelector('#create_review');
             btn_review.addEventListener('click', (e) => {
@@ -597,53 +593,46 @@
             // Create review
 
             async function sendDataCreate(name, email, rate, title, image, content) {
-    let form = new FormData();
-    let dataReview = {
-        'name': `${name}`,
-        'email': `${email}`,
-        'rate': rate,
-        'title': `${title}`,
-        'content': `${content}`,
-    }
-    form.append('name', `${name}`);
-    form.append('email', `${email}`);
-    form.append('rate', rate);
-    form.append('title', `${title}`);
-    form.append('content', `${content}`);
-    form.append('image', image);
-
-    // Get the CSRF token value from the meta tag in the HTML
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-    const res = await fetch(`http://127.0.0.1:8000/review/store/{{ $products->id }}`, {
-        method: "POST",
-        headers: {
-            "X-CSRF-TOKEN": csrfToken, // Include the CSRF token in the headers
-        },
-        body: form,
-    }).then((response) => response.json())
-    .then((data) => {
-        showData(data);
-    })
-    .catch((error) => {
-        alert(error.message);
-    });
-}
+                let form = new FormData();
+                let dataReview = {
+                    'name': `${name}`,
+                    'email': `${email}`,
+                    'rate': rate,
+                    'title': `${title}`,
+                    'content': `${content}`,
+                }
+                form.append('name', `${name}`);
+                form.append('email', `${email}`);
+                form.append('rate', rate);
+                form.append('title', `${title}`);
+                form.append('content', `${content}`);
+                form.append('image', image);
+                const res = await fetch(`http://127.0.0.1:8000/review/store/{{ $products->id }}`, {
+                        method: "POST",
+                        // headers: {
+                        //     "Content-Type": "application/json",
+                        //     "X-Requested-With": "XMLHttpRequest",
+                        // },
+                        body: form,
+                    }).then((response) => response.json())
+                    .then((data) => {
+                        showData(data);
+                    })
+                    .catch((error) => {
+                        alert(error.message);
+                    });
+            }
 
             // delete review
 
             let btn_delete = document.querySelector('#btn_delete');
 
             async function sendDelete(id) {
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
                 const res = await fetch(`http://127.0.0.1:8000/review/destroy/${id}`, {
                         method: "DELETE",
                         headers: {
                             "Content-Type": "application/json",
                             "X-Requested-With": "XMLHttpRequest",
-                            "X-CSRF-TOKEN": csrfToken, // Include the CSRF token in the headers
-
                         },
                     })
                     .then((response) => response.json())
@@ -663,13 +652,7 @@
             // Edit comment
 
             async function sendEdit(id) {
-                
-                const res = await fetch(`http://127.0.0.1:8000/review/edit/${id}`,headers: {
-                            "Content-Type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest",
-                            "X-CSRF-TOKEN": csrfToken, // Include the CSRF token in the headers
-
-                        })
+                const res = await fetch(`http://127.0.0.1:8000/review/edit/${id}`)
                     .then((response) => response.json())
                     .then((data) => {
                         createForm(data);
@@ -945,31 +928,10 @@
     <script>
         const addToCart = document.querySelector('#addtocart');
 
-        function addToCart(id) {
-    // Create a new FormData instance
-    let formData = new FormData();
-    
-    // Append the product ID to the form data
-    formData.append('product_id', id);
-    
-    // Send the POST request
-    fetch(`/cart/${id}`, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Handle the response data here, such as updating the UI or showing a message
-        console.log(data);
-    })
-    .catch(error => {
-        // Handle any errors that occur during the fetch
-        console.error('Error:', error);
-    });
-}
+        addToCart.addEventListener('click', (e) => {
+            e.preventDefault();
+        })
+
         const dpt_menu = document.querySelectorAll('.dpt_menu');
         const close_menu = document.querySelectorAll('#close_menu');
 

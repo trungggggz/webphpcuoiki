@@ -147,7 +147,6 @@ class homeController extends Controller
             }
             return redirect()->route('pageShip')->with('success', 'Đã đăng kí thành công');
         } catch (Exception $e) {
-            dd($e);
             return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
     }
