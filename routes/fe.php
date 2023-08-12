@@ -24,7 +24,10 @@ use Illuminate\Routing\Router;
         Route::get('viewcart',[cartController::class,'viewCart'])->name('viewcart');
         Route::post('cart/{id}',[cartController::class,'addToCart'])->name('cart');
         Route::get('search',[homeController::class,'search'])->name('search');
-
+        Route::get('searchpage',[homeController::class,'searchPage'])->name('searchpage');
+        Route::get('removecart/{id}',[cartController::class,'removeCart'])->name('removecart');
+        Route::get('deletecart/{id}',[cartController::class,'deleteCart'])->name('deletecart');
+        Route::get('updateQuantity/{id}/{quantity}',[cartController::class,'updateQuantity'])->name('updateQuantity');
         Route::get('pageoffer/{id}',[singlePageController::class,'pageOffer'])->name('pageoffer');
         Route::get('/detail/{id}',[singlePageController::class,'detail'])->name('detail');
         Route::get('shipper',[homeController::class,'shipper'])->middleware('auth')->name('shipper');
@@ -32,6 +35,11 @@ use Illuminate\Routing\Router;
         Route::post('shipperSuccess',[homeController::class,'shipperSuccess'])->middleware('auth')->name('shipperSuccess');
         Route::get('pageShip',[homeController::class,'pageShip'])->middleware('auth')->name('pageShip');
         Route::post('confirm',[homeController::class,'confirm'])->middleware('auth')->name('confirm');
+        Route::get('confirm/product/{id}',[homeController::class,'confirmProduct'])->middleware('auth')->name('confirmProduct');
+        Route::get('pageConfirm',[homeController::class,'pageConfirm'])->middleware('auth')->name('pageConfirm');
+        Route::post('confirm/item',[homeController::class,'confirmItem'])->middleware('auth')->name('confirmItem');
+        Route::get('viewAllProducts',[homeController::class,'viewAllProducts'])->name('viewAllProducts');
+
         Route::get('/brand/{id}',[singlePageController::class,'brand'])->name('brand');
         Route::get('/category/{id}',[singlePageController::class,'category'])->name('categoty');
         
@@ -66,6 +74,14 @@ use Illuminate\Routing\Router;
         Route::post('process-transaction', [payPalController::class, 'processTransaction'])->middleware('auth')->name('processTransaction');
         Route::get('success-transaction', [payPalController::class, 'successTransaction'])->middleware('auth')->name('successTransaction');
         Route::get('cancel-transaction', [payPalController::class, 'cancelTransaction'])->middleware('auth')->name('cancelTransaction');
+        Route::get('softdelete/{id}', [payPalController::class, 'softdelete'])->middleware('auth')->name('softdelete');
+        Route::get('restore/{id}',[payPalController::class, 'restore'])->middleware('auth')->name('restore');
+
+        Route::get('checkout',[cartController::class,'checkout'])->middleware('auth')->name('checkout');
+        Route::post('process', [cartController::class, 'process'])->middleware('auth')->name('process');
+        Route::get('cancel', [cartController::class, 'cancel'])->middleware('auth')->name('cancel'); 
+        Route::get('success', [cartController::class, 'success'])->middleware('auth')->name('success');
+
     })
 
 ?>
