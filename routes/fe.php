@@ -8,6 +8,7 @@ use App\Http\Controllers\user\wishlistController;
 use App\Http\Controllers\user\cartController;
 use App\Http\Controllers\user\PayPalController;
 use App\Http\Controllers\user\reviewController;
+use App\Http\Controllers\user\informationController;
 
 use Illuminate\Routing\Router;
 
@@ -49,6 +50,16 @@ use Illuminate\Routing\Router;
             Route::delete('destroy/{id}',[wishlistController::class,'destroy'])->name('wishlist.destroy');
             Route::delete('delete/{id}',[wishlistController::class,'delete'])->name('wishlist.delete');
         });
+
+
+         // Route infomation user
+
+         Route::middleware('auth')->prefix('information')->group(function(){
+            Route::get('/{id}',[informationController::class,'index'])->name('information');
+            Route::post('store',[informationController::class,'store'])->name('information.store');
+            Route::get('edit/{id}',[informationController::class,'edit'])->name('information.edit');
+            Route::patch('update/{id}',[informationController::class,'update'])->name('information.update');
+         });
 
         Route::get('history',[PayPalController::class, 'history'])->middleware('auth')->name('history');
         Route::post('payment', [payPalController::class, 'payment'])->middleware('auth')->name('payment');
